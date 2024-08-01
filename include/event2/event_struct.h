@@ -126,11 +126,11 @@ struct event {
 	/* for managing timeouts */
 	union {
 		TAILQ_ENTRY(event) ev_next_with_common_timeout;
-		size_t min_heap_idx;
-	} ev_timeout_pos;
-	evutil_socket_t ev_fd;
+		size_t min_heap_idx;//表示在小根堆当中的位置
+	} ev_timeout_pos;//超时位置，默认使用的是最小堆
+	evutil_socket_t ev_fd;//socket 的fd
 
-	short ev_events;
+	short ev_events;//事件类型
 	short ev_res;		/* result passed to event callback */
 
 	struct event_base *ev_base;
@@ -138,8 +138,8 @@ struct event {
 	union {
 		/* used for io events */
 		struct {
-			LIST_ENTRY (event) ev_io_next;
-			struct timeval ev_timeout;
+			LIST_ENTRY (event) ev_io_next;//用于链表的下一个节点
+			struct timeval ev_timeout;//定时事件发生作用的时间
 		} ev_io;
 
 		/* used by signal events */
@@ -152,7 +152,7 @@ struct event {
 	} ev_;
 
 
-	struct timeval ev_timeout;
+	struct timeval ev_timeout;//event是定时时间的时候，这个字段表示定时时间，记录的是绝对时间
 };
 
 TAILQ_HEAD (event_list, event);
